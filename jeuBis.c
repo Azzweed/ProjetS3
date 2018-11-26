@@ -41,7 +41,7 @@ void HandleEvent(SDL_Event event,
 
 int main(int argc, char* argv[])
 {
-    SDL_Surface *ecran, *temp, *grass, *castle ,*sprite ,*door;
+    SDL_Surface *ecran, *temp, *grass, *castle ,*sprite ,*door ,*key ;
     
     SDL_Rect spritePosition;
     int map[SCREEN_WIDTH][SCREEN_HEIGHT];
@@ -60,6 +60,15 @@ int main(int argc, char* argv[])
     grass = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
     
+    /* sprite de la clee */
+    
+    temp  = SDL_LoadBMP("key.bmp");
+    key = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    
+    
+    
+    /* sprite de la porte */
     
     temp  = SDL_LoadBMP("door.bmp");
     door = SDL_DisplayFormat(temp);
@@ -85,6 +94,10 @@ int main(int argc, char* argv[])
     int newmap = 1;
     int gameover = 0;
     int level=0;
+    int keys = 0;
+    
+    
+ 
     while (!gameover)
     {
 	SDL_Event event;
@@ -105,6 +118,7 @@ int main(int argc, char* argv[])
 		spritePosition.x = 50;
 		spritePosition.y = 650;
 		newmap=0;
+		keys=0;
 	      }
 	    }
 	    if (level==1){
@@ -113,6 +127,7 @@ int main(int argc, char* argv[])
 		spritePosition.x = 50;
 		spritePosition.y = 50;
 		newmap=0;
+		keys=0;
 	      }
 	    }
 	    if (level==2){
@@ -121,6 +136,7 @@ int main(int argc, char* argv[])
 		spritePosition.x = 500;
 		spritePosition.y = 350;
 		newmap=0;
+		keys=0;
 	      }
 	    }
 	    if (level==3){
@@ -129,6 +145,7 @@ int main(int argc, char* argv[])
 		spritePosition.x = 350;
 		spritePosition.y = 400;
 		newmap=0;
+		keys=0;
 	      }
 
 	      
@@ -178,17 +195,30 @@ int main(int argc, char* argv[])
 	      }
 	    }
 	    else{
+	      
 	      SDL_BlitSurface(grass, NULL, ecran, &position);
 	      for (int i=0; i<50 ;i++){
 		for (int j=0; j<50 ;j++){
 		  map[50*x+i][50*y+j]=0;
 		}
 	      }
-	    }
-	    
-	  }
-	
+	      
+	      if (fondMap[z]=='-'){
+	      SDL_BlitSurface(key, NULL, ecran, &position);
+	      
+	      for (int i=0; i<50 ;i++){
+		for (int j=0; j<50 ;j++){
+		  map[50*x+i][50*y+j]=3;
+		}  
+	      }
+	      }
+
+
+		}
+	      }
+
 	}
+    
 	
 	
     
@@ -279,7 +309,12 @@ int main(int argc, char* argv[])
 	sprite = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
 	
-	if (map[spritePosition.x][spritePosition.y+5]==2){
+	if (map[spritePosition.x][spritePosition.y+5]==3){
+	  keys = 1;
+	  
+	}
+	
+	if ((map[spritePosition.x][spritePosition.y+5]==2) & (keys == 1)){
 	  if (level ==3)
 	  {
 	    gameover=1;
@@ -287,12 +322,14 @@ int main(int argc, char* argv[])
 	  level+=1;
 	  newmap=1;
 
+
 	
 	}
     }
 
 
     /* Libération des pointeurs */
+    SDL_FreeSurface(key);
     SDL_FreeSurface(grass);
     SDL_FreeSurface(door);
     SDL_FreeSurface(castle);

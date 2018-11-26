@@ -238,6 +238,14 @@ int main(int argc, char* argv[])
 	  {
             spritePosition.y -= 5;
 	  }
+	  else
+	  {
+	   while ((map[spritePosition.x][spritePosition.y-1]!=1) & (map[spritePosition.x+35][spritePosition.y-1]!=1))
+	   {
+	     spritePosition.y -= 1;
+	   }
+
+	  }
 	}
 	
 	else
@@ -247,6 +255,11 @@ int main(int argc, char* argv[])
 	    if ((map[spritePosition.x][spritePosition.y+51]!=1) & (map[spritePosition.x+35][spritePosition.y+51]!=1))
 	      {
 	      spritePosition.y += 10;
+	    
+	      while ((map[spritePosition.x][spritePosition.y+50]==1) | (map[spritePosition.x+35][spritePosition.y+50]==1))
+		{
+		  spritePosition.y -= 1;
+		}
 	      }
 	   }
 	
@@ -266,7 +279,7 @@ int main(int argc, char* argv[])
 	sprite = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
 	
-	if (map[spritePosition.x][spritePosition.y]==2){
+	if (map[spritePosition.x][spritePosition.y+5]==2){
 	  if (level ==3)
 	  {
 	    gameover=1;

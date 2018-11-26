@@ -231,21 +231,33 @@ int main(int argc, char* argv[])
 
 	}
 	
-	
+
         if (keystate[SDLK_UP] ) {
 	  if ((map[spritePosition.x][spritePosition.y-5]!=1) & (map[spritePosition.x+35][spritePosition.y-5]!=1))
 	  {
             spritePosition.y -= 5;
 	  }
+	  
 	}
 	
 	else
-    
+	
 	  {
+
 	  
 	    if ((map[spritePosition.x][spritePosition.y+51]!=1) & (map[spritePosition.x+35][spritePosition.y+51]!=1))
 	      {
-	      spritePosition.y += 10;
+		if ((map[spritePosition.x][spritePosition.y+61]!=1) & (map[spritePosition.x+35][spritePosition.y+61]!=1))
+		{	
+		  spritePosition.y += 10;
+		}
+		else 
+		{
+		  while ((map[spritePosition.x][spritePosition.y+51]!=1) & (map[spritePosition.x+35][spritePosition.y+51]!=1))
+		  {
+		    spritePosition.y += 1;
+		  }
+		}
 	      }
 	   }
 	

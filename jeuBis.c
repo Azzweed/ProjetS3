@@ -41,7 +41,7 @@ void HandleEvent(SDL_Event event,
 
 int main(int argc, char* argv[])
 {
-    SDL_Surface *ecran, *temp, *grass, *castle ,*sprite ,*door ,*key ;
+    SDL_Surface *ecran, *temp, *grass, *castle ,*sprite ,*door ,*doorclose ,*key ;
     
     SDL_Rect spritePosition;
     int map[SCREEN_WIDTH][SCREEN_HEIGHT];
@@ -72,6 +72,10 @@ int main(int argc, char* argv[])
     
     temp  = SDL_LoadBMP("door.bmp");
     door = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    
+    temp  = SDL_LoadBMP("doorclose.bmp");
+    doorclose = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
 
     
@@ -195,7 +199,15 @@ int main(int argc, char* argv[])
 	  
 	    case '%' : 
 	      
-	      SDL_BlitSurface(door, NULL, ecran, &position);
+	      if (keys == 0)
+	      {
+		SDL_BlitSurface(doorclose, NULL, ecran, &position);
+	      }
+	      else
+	      {
+		SDL_BlitSurface(door, NULL, ecran, &position);
+	      }
+
 	      for (int i=0; i<50 ;i++)
 		{
 		for (int j=0; j<50 ;j++)
@@ -361,6 +373,7 @@ int main(int argc, char* argv[])
     SDL_FreeSurface(key);
     SDL_FreeSurface(grass);
     SDL_FreeSurface(door);
+    SDL_FreeSurface(doorclose);
     SDL_FreeSurface(castle);
     SDL_FreeSurface(sprite);
     SDL_Quit();

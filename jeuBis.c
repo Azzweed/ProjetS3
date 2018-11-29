@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Constantes.h"
+#include "fonctions.h"
 
-
-
+#include "fonctions.c"
 
 
 
@@ -95,6 +95,7 @@ int main(int argc, char* argv[])
     int gameover = 0;
     int level=0;
     int keys = 0;
+
     
     
  
@@ -238,24 +239,23 @@ int main(int argc, char* argv[])
 	  temp   = SDL_LoadBMP("spriteleft.bmp");
 	  sprite = SDL_DisplayFormat(temp);
 	  SDL_FreeSurface(temp);
-	  if ((map[spritePosition.x-6][spritePosition.y+1]!=1) & (map[spritePosition.x-6][spritePosition.y+49]!=1))
+	  
+	  if (collisionGauche(spritePosition.x-5,spritePosition.y,map)==0)
 	    {
 	      spritePosition.x -= 5;
 	    }
-	    
 
-	      
-	  
 	  }
-	
-        
+	  
+	  
+	  
         if (keystate[SDLK_RIGHT] ) {
 	  
 	temp   = SDL_LoadBMP("spriteright.bmp");
 	sprite = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
 	
-	  if ((map[spritePosition.x+40][spritePosition.y+1]!=1) & (map[spritePosition.x+40][spritePosition.y+49]!=1))
+	  if (collisionDroite(spritePosition.x+5,spritePosition.y,map)==0)
 	  {
             spritePosition.x += 5;
 	  }
@@ -264,29 +264,39 @@ int main(int argc, char* argv[])
 	
 	
         if (keystate[SDLK_UP] ) {
-	  if ((map[spritePosition.x][spritePosition.y-5]!=1) & (map[spritePosition.x+35][spritePosition.y-5]!=1))
+	  
+	  
+	  
+	  if ( (collisionHaut(spritePosition.x,spritePosition.y-5,map)==0))
 	  {
             spritePosition.y -= 5;
+
 	  }
+	  
+	  
 	  else
+	    
 	  {
-	   while ((map[spritePosition.x][spritePosition.y-1]!=1) & (map[spritePosition.x+35][spritePosition.y-1]!=1))
+	   while (collisionHaut(spritePosition.x,spritePosition.y-1,map)==0)
+	     
 	   {
 	     spritePosition.y -= 1;
 	   }
-
 	  }
+	  
+	  
 	}
 	
 	else
-    
-	  {
 	  
-	    if ((map[spritePosition.x][spritePosition.y+51]!=1) & (map[spritePosition.x+35][spritePosition.y+51]!=1))
+	  {
+
+	  
+	    if ( collisionBas(spritePosition.x,spritePosition.y,map)==0)
 	      {
 	      spritePosition.y += 10;
 	    
-	      while ((map[spritePosition.x][spritePosition.y+50]==1) | (map[spritePosition.x+35][spritePosition.y+50]==1))
+	      while (collisionBas(spritePosition.x,spritePosition.y-1,map)==1)
 		{
 		  spritePosition.y -= 1;
 		}

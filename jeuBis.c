@@ -41,8 +41,8 @@ void HandleEvent(SDL_Event event,
 
 int main(int argc, char* argv[])
 {
-    SDL_Surface *ecran, *temp, *grass, *castle ,*sprite ,*door ,*doorclose ,*key ;
-    
+    SDL_Surface *ecran, *temp, *grass, *castle ,*sprite ,*door ,*doorclose ,*key , *mob ,*mob2;
+    SDL_Rect mobPosition;
     SDL_Rect spritePosition;
     int map[SCREEN_WIDTH][SCREEN_HEIGHT];
     int colorkey;
@@ -66,7 +66,15 @@ int main(int argc, char* argv[])
     key = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
     
+    /* sprite des monstres */
     
+    temp  = SDL_LoadBMP("mob.bmp");
+    mob = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    
+    temp  = SDL_LoadBMP("mob2.bmp");
+    mob2 = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
     
     /* sprite de la porte */
     
@@ -89,9 +97,7 @@ int main(int argc, char* argv[])
     sprite = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
     
-    /* set sprite position */
-    spritePosition.x = 700;
-    spritePosition.y = 50;
+
     
 
     
@@ -99,6 +105,7 @@ int main(int argc, char* argv[])
     int gameover = 0;
     int level=0;
     int keys = 0;
+    int ouilesmob = 0;
 
     
     
@@ -122,6 +129,9 @@ int main(int argc, char* argv[])
 	      if (newmap==1){
 		spritePosition.x = 50;
 		spritePosition.y = 650;
+		mobPosition.x = 150;
+		mobPosition.y = 650;
+	
 		newmap=0;
 		keys=0;
 	      }
@@ -248,17 +258,32 @@ int main(int argc, char* argv[])
 	  }
 	 }
 
+	/* handle mob mouvement */
 
-
-    
+	if (mouvementmob(mobPosition.x,mobPosition.y,map,ouilesmob)==-1)
+	{
+	  mobPosition.x -=1;
+	  SDL_BlitSurface(mob, NULL, ecran, &mobPosition);
+	}
+		
+	if (mouvementmob(mobPosition.x,mobPosition.y,map,ouilesmob)==1)
+	{
+	  mobPosition.x +=1;
+	  SDL_BlitSurface(mob2, NULL, ecran, &mobPosition);
+	}
+	if (mouvementmob(mobPosition.x,mobPosition.y,map,ouilesmob)==0)
+	{
+	  ouilesmob+=1;
+	  
+	  if (ouilesmob == 2)
+	  {
+	    ouilesmob = 0;
+	  }
+	}
 	
 	
-    
-
 	
 
-	
-        
     
     
         /* handle sprite movement */

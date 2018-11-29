@@ -9,3 +9,6 @@ int collisionDroite(int posx , int posy , int map[][750]);       /* gere les col
 int collisionGauche(int posx , int posy , int map[][750]);       /* gere les collisions a gauche du sprite (renvoit 1 si collision) */
 int collisionHaut(int posx , int posy , int map[][750]);         /* gere les collisions au dessus du sprite (renvoit 1 si collision) */
 int collisionBas(int posx , int posy , int map[][750]);          /* gere les collisions en dessous du sprite (renvoit 1 si collision) */
+
+int mouvementmob(int posx , int posy , int map[][750] , int direction); 	 /* gere le deplacement des monstres (retourne 1 ou -1 selon la direction que le monstre doit prendre)
+								            les monstres font des deplacements droite/gauche seulement )*/

@@ -172,53 +172,72 @@ int main(int argc, char* argv[])
 	/* Tracé du background en fonction des # */
 	int x=0;
 	int y=0;
-	for (int z=0; z<300; z++){
+	for (int z=0; z<300; z++)
+	{
 	  y=z/20;
 	  x=z%20;
 	  position.x = x * SOIL_SIZE;
           position.y = y * SOIL_SIZE;
-	  if (fondMap[z]=='#'){
-	    SDL_BlitSurface(castle, NULL, ecran, &position);
-	    for (int i=0; i<50 ;i++){
-	      for (int j=0; j<50 ;j++){
-		map[50*x+i][50*y+j]=1;
-	      }
-	    }
-	  }
-	  else{
-	    if (fondMap[z]=='%'){
+	  
+	  switch(fondMap[z])
+	  {
+	    
+	    case '#' : 
+	      SDL_BlitSurface(castle, NULL, ecran, &position);
+	      for (int i=0; i<50 ;i++)
+		{
+		for (int j=0; j<50 ;j++)
+		  {
+		  map[50*x+i][50*y+j]=1;
+		  }
+		}
+		break;
+	  
+	    case '%' : 
+	      
 	      SDL_BlitSurface(door, NULL, ecran, &position);
-	      
-	      for (int i=0; i<50 ;i++){
-		for (int j=0; j<50 ;j++){
+	      for (int i=0; i<50 ;i++)
+		{
+		for (int j=0; j<50 ;j++)
+		  {
 		  map[50*x+i][50*y+j]=2;
-		}  
+		  }
+		}
+		break;
+		
+	     case '-' : 
+	      if (keys == 0)
+	      {
+		SDL_BlitSurface(key, NULL, ecran, &position);
 	      }
-	    }
-	    else{
+	      else
+	      {
+		SDL_BlitSurface(grass, NULL, ecran, &position);
+	      }
+	      for (int i=0; i<50 ;i++)
+		{
+		for (int j=0; j<50 ;j++)
+		  {
+		  map[50*x+i][50*y+j]=3;
+		  }
+		}
+		break;
 	      
+	     default :
+	       
 	      SDL_BlitSurface(grass, NULL, ecran, &position);
-	      for (int i=0; i<50 ;i++){
-		for (int j=0; j<50 ;j++){
+	      for (int i=0; i<50 ;i++)
+	      {
+		for (int j=0; j<50 ;j++)
+		{
 		  map[50*x+i][50*y+j]=0;
 		}
 	      }
-	      
-	      if (fondMap[z]=='-'){
-	      SDL_BlitSurface(key, NULL, ecran, &position);
-	      
-	      for (int i=0; i<50 ;i++){
-		for (int j=0; j<50 ;j++){
-		  map[50*x+i][50*y+j]=3;
-		}  
-	      }
-	      }
+	  }
+	 }
 
 
-		}
-	      }
 
-	}
     
 	
 	

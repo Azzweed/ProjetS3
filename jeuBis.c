@@ -43,6 +43,8 @@ int main(int argc, char* argv[])
 {
     SDL_Surface *ecran, *temp, *grass, *castle ,*sprite ,*door ,*doorclose ,*key , *mob ,*mob2;
     SDL_Rect mobPosition;
+    SDL_Rect mobPosition1;
+    SDL_Rect mobPosition2;
     SDL_Rect spritePosition;
     int map[SCREEN_WIDTH][SCREEN_HEIGHT];
     int colorkey;
@@ -105,7 +107,9 @@ int main(int argc, char* argv[])
     int gameover = 0;
     int level=0;
     int keys = 0;
-    int ouilesmob = 0;
+    int mobdir1 = 0;
+    int mobdir2 = 0;
+    int mobdir3 = 0;
 
     
     
@@ -129,9 +133,12 @@ int main(int argc, char* argv[])
 	      if (newmap==1){
 		spritePosition.x = 50;
 		spritePosition.y = 650;
-		mobPosition.x = 150;
-		mobPosition.y = 650;
-	
+		mobPosition.x = 200;
+		mobPosition.y = 400;
+		mobPosition1.x = 250;
+		mobPosition1.y = 650;
+		mobPosition2.x = 400;
+		mobPosition2.y = 150;
 		newmap=0;
 		keys=0;
 	      }
@@ -141,6 +148,12 @@ int main(int argc, char* argv[])
 	      	      if (newmap==1){
 		spritePosition.x = 50;
 		spritePosition.y = 50;
+		mobPosition.x = 400;
+		mobPosition.y = 450;
+		mobPosition1.x = 250;
+		mobPosition1.y = 650;
+		mobPosition2.x = 400;
+		mobPosition2.y = 150;
 		newmap=0;
 		keys=0;
 	      }
@@ -150,6 +163,12 @@ int main(int argc, char* argv[])
 	      if (newmap==1){
 		spritePosition.x = 500;
 		spritePosition.y = 350;
+		mobPosition.x = 100;
+		mobPosition.y = 400;
+		mobPosition1.x = 250;
+		mobPosition1.y = 650;
+		mobPosition2.x = 450;
+		mobPosition2.y = 50;
 		newmap=0;
 		keys=0;
 	      }
@@ -159,6 +178,12 @@ int main(int argc, char* argv[])
 	      if (newmap==1){
 		spritePosition.x = 350;
 		spritePosition.y = 400;
+		mobPosition.x = 100;
+		mobPosition.y = 300;
+		mobPosition1.x = 250;
+		mobPosition1.y = 650;
+		mobPosition2.x = 500;
+		mobPosition2.y = 150;
 		newmap=0;
 		keys=0;
 	      }
@@ -228,14 +253,18 @@ int main(int argc, char* argv[])
 		break;
 		
 	     case '-' : 
+	       	  
+	      
+	      SDL_BlitSurface(grass, NULL, ecran, &position);
+		      
 	      if (keys == 0)
 	      {
 		SDL_BlitSurface(key, NULL, ecran, &position);
 	      }
-	      else
-	      {
-		SDL_BlitSurface(grass, NULL, ecran, &position);
-	      }
+	       
+
+
+	      
 	      for (int i=0; i<50 ;i++)
 		{
 		for (int j=0; j<50 ;j++)
@@ -260,31 +289,80 @@ int main(int argc, char* argv[])
 
 	/* handle mob mouvement */
 
-	if (mouvementmob(mobPosition.x,mobPosition.y,map,ouilesmob)==-1)
+	/* 1er monstre */
+	
+	if (mouvementmob(mobPosition.x,mobPosition.y,map,mobdir1)==-1)
 	{
 	  mobPosition.x -=1;
 	  SDL_BlitSurface(mob, NULL, ecran, &mobPosition);
 	}
 		
-	if (mouvementmob(mobPosition.x,mobPosition.y,map,ouilesmob)==1)
+	if (mouvementmob(mobPosition.x,mobPosition.y,map,mobdir1)==1)
 	{
 	  mobPosition.x +=1;
 	  SDL_BlitSurface(mob2, NULL, ecran, &mobPosition);
 	}
-	if (mouvementmob(mobPosition.x,mobPosition.y,map,ouilesmob)==0)
+	if (mouvementmob(mobPosition.x,mobPosition.y,map,mobdir1)==0)
 	{
-	  ouilesmob+=1;
+	  mobdir1+=1;
 	  
-	  if (ouilesmob == 2)
+	  if (mobdir1 == 2)
 	  {
-	    ouilesmob = 0;
+	    mobdir1 = 0;
 	  }
 	}
 	
 	
+	/* 2nd monstre */
+	
+	if (mouvementmob(mobPosition1.x,mobPosition1.y,map,mobdir2)==-1)
+	{
+	  mobPosition1.x -=1;
+	  SDL_BlitSurface(mob, NULL, ecran, &mobPosition1);
+	}
+		
+	if (mouvementmob(mobPosition1.x,mobPosition1.y,map,mobdir2)==1)
+	{
+	  mobPosition1.x +=1;
+	  SDL_BlitSurface(mob2, NULL, ecran, &mobPosition1);
+	}
+	if (mouvementmob(mobPosition1.x,mobPosition1.y,map,mobdir2)==0)
+	{
+	  mobdir2+=1;
+	  
+	  if (mobdir2 == 2)
+	  {
+	    mobdir2 = 0;
+	  }
+	}
+	
 	
 
     
+    	/* 3eme monstre */
+	
+	if (mouvementmob(mobPosition2.x,mobPosition2.y,map,mobdir3)==-1)
+	{
+	  mobPosition2.x -=1;
+	  SDL_BlitSurface(mob, NULL, ecran, &mobPosition2);
+	}
+		
+	if (mouvementmob(mobPosition2.x,mobPosition2.y,map,mobdir3)==1)
+	{
+	  mobPosition2.x +=1;
+	  SDL_BlitSurface(mob2, NULL, ecran, &mobPosition2);
+	}
+	if (mouvementmob(mobPosition2.x,mobPosition2.y,map,mobdir3)==0)
+	{
+	  mobdir3+=1;
+	  
+	  if (mobdir3 == 2)
+	  {
+	    mobdir3 = 0;
+	  }
+	}
+	
+	
     
         /* handle sprite movement */
 	Uint8 *keystate;
@@ -362,8 +440,9 @@ int main(int argc, char* argv[])
 
 	colorkey = SDL_MapRGB(ecran->format ,255 ,255,255);
 	SDL_SetColorKey(sprite,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
-
-
+	SDL_SetColorKey(mob,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
+	SDL_SetColorKey(mob2,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
+	SDL_SetColorKey(key,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
         
         /* draw the sprite */
         SDL_BlitSurface(sprite, NULL, ecran, &spritePosition);

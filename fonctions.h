@@ -12,3 +12,5 @@ int collisionBas(int posx , int posy , int map[][750]);          /* gere les col
 
 int mouvementmob(int posx , int posy , int map[][750] , int direction); 	 /* gere le deplacement des monstres (retourne 1 ou -1 selon la direction que le monstre doit prendre)
 								            les monstres font des deplacements droite/gauche seulement )*/
+								         
+int collisionmob(int posx ,int posy ,int posxmob ,int posymob);     /*revoit 1 si le personnage entre en contact avec un monstre , renvoit 0 sinon */

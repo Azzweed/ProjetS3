@@ -50,17 +50,62 @@ int collisionBas(int posx , int posy , int map[][750])
 
 int mouvementmob(int posx , int posy , int map[][750] , int direction)
 {
-  if ((collisionGauche(posx-1 , posy,map)==0) & (direction == 0))
+  if ((collisionGauche(posx-1 , posy,map)==0) & (direction == 0) & (collisionGauche(posx-1 , posy+20,map)==1))
   {
     return -1;
   }
   
-  if ((collisionDroite(posx+16,posy,map)==0) & (direction == 1))
+  if ((collisionDroite(posx+16,posy,map)==0) & (direction == 1) & (collisionDroite(posx+16 , posy+20,map)==1))
   {
     return 1;
   }
   
   return 0;
+  
+}
+
+
+
+int collisionmob(int posx ,int posy ,int posxmob ,int posymob)
+{
+  if ((posx > posxmob) & (posx < posxmob+50))
+  {
+    if ((posy > posymob) & (posy < posymob+50))
+    {
+      return 1;  
+    }
+    
+  }
+  
+  
+  if ((posx+35 > posxmob) & (posx+35 < posxmob+50))
+  {
+    if ((posy > posymob) & (posy < posymob+50))
+    {
+      return 1;  
+    }
+    
+  }
+  
+  if ((posx > posxmob) & (posx < posxmob+50))
+  {
+    if ((posy+50 > posymob) & (posy+50 < posymob+50))
+    {
+      return 1;  
+    }
+    
+  }
+  
+  if ((posx+35 > posxmob) & (posx+35 < posxmob+50))
+  {
+    if ((posy+50 > posymob) & (posy+50 < posymob+50))
+    {
+      return 1;  
+    }
+    
+  }
+  return 0;
+
   
 }
 

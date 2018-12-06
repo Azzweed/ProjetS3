@@ -1,0 +1,206 @@
+#include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
+#include <stdio.h>
+#include <math.h> // Pour differentes opération mathématique avancée
+#include <stdbool.h>
+#include <time.h>
+#define SCREEN_WIDTH  1000
+#define SCREEN_HEIGHT 750
+
+
+class Button
+
+{
+//Les attributs du bouton
+
+  
+  private:
+
+  
+  SDL_Rect box;
+  SDL_Event event;
+  
+  public :
+
+  Button( int x, int y, int w, int h );
+ 
+
+  void handle_events();
+ 
+  void show();
+
+};
+
+Button :: Button( int x, int y, int w, int h )
+{
+    box.x = x;
+    box.y = y;
+    box.w = w;
+    box.h = h;
+
+    
+}
+
+
+void pause()
+{
+    int continuer = 1;
+    SDL_Event event;
+ 
+    while (continuer)
+    {
+        SDL_WaitEvent(&event);
+        switch(event.type)
+        {
+            case SDL_QUIT:
+                continuer = 0;
+                break;
+        }
+    }
+}
+
+void Button::handle_events()
+{
+  int gameover = 0;
+  SDL_Surface *temp;
+  SDL_Surface *menu;
+  SDL_Surface *select;
+  SDL_Surface *screen = NULL, *imageDeFond = NULL;
+  SDL_Rect positionFond, position;
+  
+  positionFond.x = 0;
+
+  positionFond.y = 0;
+  
+  position.x = 0; 
+  position.y = 0;
+  
+  
+  if(event.type == SDL_QUIT){
+    gameover = 1;
+    
+  }
+  
+  if( event.type == SDL_MOUSEMOTION )
+  {
+    position.x = event.motion.x;
+    position.y = event.motion.y;
+ 
+  
+
+   
+   
+  if( ( position.x > box.x ) && ( position.x < box.x + box.w ) && ( position.y > box.y ) && ( position.y < box.y + box.h ) )
+  {
+      select = SDL_LoadBMP("menu3.bmp");
+      
+    
+  }
+    // Initialize SDL 
+    SDL_Init(SDL_INIT_VIDEO);
+
+    // Set the title bar 
+    SDL_WM_SetCaption("SDL Animation", "SDL Animation");
+    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
+    menu = SDL_DisplayFormat(select);
+    SDL_FreeSurface(select);
+
+  
+    SDL_BlitSurface(menu, NULL, screen, &positionFond);	
+    SDL_Flip(screen);
+    pause();
+  
+    SDL_FreeSurface(imageDeFond); /* On libère la surface */
+    SDL_Quit();
+  }
+     
+
+  //Si un bouton de la souris est relache
+  if( event.type == SDL_MOUSEBUTTONDOWN )
+  {
+    if( event.button.button == SDL_BUTTON_LEFT )
+    {
+      position.x = event.button.x;
+      position.y = event.button.y;
+      if( ( position.x > box.x ) && ( position.x < box.x + box.w ) && ( position.y > box.y ) && ( position.y < box.y + box.h ) )
+      {
+	//LANCER JEU/
+	
+      }
+      
+    }
+    
+  }
+  
+}
+
+
+int main()
+{ 
+  int x1, x2, y1, y2, w1, w2, h1, h2;
+
+  x1 = 40;
+  y1 = 200;
+  w1 = 250;
+  h1 = 100;
+  
+  
+  x2 = 40;
+  y2 = 390;
+  w2 = 200;
+  h2 = 120;
+  
+
+  SDL_Surface *screen = NULL, *imageDeFond = NULL;
+  
+  SDL_Rect positionFond;
+  
+  positionFond.x = 0;
+
+  positionFond.y = 0;
+  
+  int gameover = 0;
+  
+  Button start (x1,y1,w1,h1);
+  
+  Button Exit (x2,y2,w2,h2);
+  
+  while (!gameover)
+  {
+  SDL_Event event;
+  
+  SDL_Surface *temp;
+  
+  SDL_Surface *menu;
+  
+  Button start (x1,y1,w1,h1);
+  
+  Button Exit (x2,y2,w2,h2);
+  
+  // Initialize SDL 
+  SDL_Init(SDL_INIT_VIDEO);
+
+  // Set the title bar 
+  SDL_WM_SetCaption("SDL Animation", "SDL Animation");
+
+  // Create window 
+  screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
+    
+ 
+  temp = SDL_LoadBMP("menu.bmp");
+  menu = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+
+  
+  SDL_BlitSurface(menu, NULL, screen, &positionFond);	
+  SDL_Flip(screen);
+  pause();
+  
+  SDL_FreeSurface(imageDeFond); /* On libère la surface */
+  
+  
+  
+  SDL_Quit();
+
+  }
+}

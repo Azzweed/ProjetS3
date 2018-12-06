@@ -41,7 +41,8 @@ void HandleEvent(SDL_Event event,
 
 int main(int argc, char* argv[])
 {
-  SDL_Surface *ecran, *temp, *grass, *castle ,*sprite ,*door ,*doorclose ,*key , *mob ,*mob2 ,*coeur , *coeur2 ,*hudkey , *ladder;
+  SDL_Surface *ecran, *temp, *grass, *castle ,*sprite ,*door ,*doorclose ,*key ,
+               *mob ,*mob2 ,*coeur , *coeur2 ,*hudkey , *ladder ,*menu ,*menu1 ,*menu2;
   SDL_Rect HUD;
   SDL_Rect mobPosition;
   SDL_Rect mobPosition1;
@@ -58,6 +59,20 @@ int main(int argc, char* argv[])
     
   /* Création de la fenetre */
   ecran = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
+  
+  /* image du menu */
+  
+  temp = SDL_LoadBMP("menu.bmp");
+  menu = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+  
+  temp = SDL_LoadBMP("menu1.bmp");
+  menu1 = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+  
+  temp = SDL_LoadBMP("menu2.bmp");
+  menu2 = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
     
   /* Zone de map ou le personnage peut se déplacer */
   temp  = SDL_LoadBMP("grassCenter.bmp");
@@ -120,19 +135,21 @@ int main(int argc, char* argv[])
   coeur2 = SDL_DisplayFormat(temp);
   SDL_FreeSurface(temp);
     
-  HUD.x=950;
-  HUD.y=0;
-  SDL_BlitSurface(coeur2, NULL, ecran, &HUD);
-  HUD.x=900;
-  SDL_BlitSurface(coeur, NULL, ecran, &HUD);
-  HUD.x=850;
-  SDL_BlitSurface(coeur, NULL, ecran, &HUD);
+  
+  
+  
+  SDL_Rect positionFond;
+  positionFond.x = 0;
+  positionFond.y = 0;
+  
+  SDL_Rect positionmouse;
+  positionmouse.x = 0; 
+  positionmouse.y = 0;
 
-    
 
-    
+  int exit = 0;
   int newmap = 1;
-  int gameover = 0;
+  int gameover = 1;
   int level=0;
   int keys = 0;
   int mobdir1 = 0;
@@ -142,9 +159,74 @@ int main(int argc, char* argv[])
   int saut = 0;
 
     
+  while (exit == 0){
+  
+  if (gameover==1)
+  {
+  newmap = 1;
+  level=0;
+  vie = 3;
+
+  }
+  
+  while (gameover)
+  {
+    SDL_Event event;
+    if (SDL_PollEvent(&event)) {
+      HandleEvent(event, &gameover, level);
+      
+    if( event.type == SDL_MOUSEMOTION )
+      {
+	positionmouse.x = event.motion.x;
+	positionmouse.y = event.motion.y;
+      }
+    }
+
+
     
+
+      
+  if ((positionmouse.x > 60) & (positionmouse.x < 275) & (positionmouse.y > 200) & (positionmouse.y < 300) )
+  {
+
+    SDL_BlitSurface(menu1, NULL, ecran, &positionFond);
+    SDL_Flip(ecran);
+    
+    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) 
+    {
+      gameover = 0;
+    }
+
+  }
+  
+  else
+  {
+    
+  if ((positionmouse.x > 50) & (positionmouse.x < 250) & (positionmouse.y > 400) & (positionmouse.y < 500))
+    {
+
+      SDL_BlitSurface(menu2, NULL, ecran, &positionFond);
+      SDL_Flip(ecran);
+      if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) 
+      {
+	gameover = 0;
+	 exit = 1;
+      }
+
+    }
+  
+  else 
+    {
+      SDL_BlitSurface(menu, NULL, ecran, &positionFond);
+      SDL_Flip(ecran);
+    }
+  }
+    
+
+    
+  }
  
-  while (!gameover)
+  while ((!gameover)&(!exit))
     {
       SDL_Event event;
       if (SDL_PollEvent(&event)) {
@@ -162,10 +244,10 @@ int main(int argc, char* argv[])
 	fichier = fopen("map0.txt", "r");
 	if (newmap==1){
 	  spritePosition.x = 50;
-	  spritePosition.y = 650;
+	  spritePosition.y = 600;
 	  mobPosition.x = 200;
 	  mobPosition.y = 400;
-	  mobPosition1.x = 250;
+	  mobPosition1.x = 500;
 	  mobPosition1.y = 650;
 	  mobPosition2.x = 400;
 	  mobPosition2.y = 150;
@@ -456,6 +538,11 @@ int main(int argc, char* argv[])
 	
 	  
 	  
+	if (map[spritePosition.x+15][spritePosition.y+49]==4)
+	  {
+	      saut = 0;
+	  }
+	
 	if (saut < 90)
 	  {
 	  
@@ -464,14 +551,7 @@ int main(int argc, char* argv[])
 	    {
 	      saut = 90;
 	    }
-	    
-	    if (map[spritePosition.x+15][spritePosition.y+49]==4)
-	    {
-	      saut = 0;
-	    }
-	    
-	      
-	      
+
 	      
 	    if (collisionHaut(spritePosition.x,spritePosition.y-5,map)==0)
 	      {
@@ -497,8 +577,6 @@ int main(int argc, char* argv[])
 	  
 	  {
 
-	  
-	    
 	    
 	    if ( collisionBas(spritePosition.x,spritePosition.y,map)==0)
 	      {
@@ -648,6 +726,10 @@ int main(int argc, char* argv[])
 	  {
 	    gameover=1;
 	  }
+	if (vie < 3)
+	{
+	  vie += 1;
+	}
 	level+=1;
 	newmap=1;
 
@@ -659,9 +741,12 @@ int main(int argc, char* argv[])
 	gameover =1;
       }
     }
-
+  }
 
   /* Libération des pointeurs */
+  SDL_FreeSurface(menu);
+  SDL_FreeSurface(menu1);
+  SDL_FreeSurface(menu2);
   SDL_FreeSurface(key);
   SDL_FreeSurface(ladder);
   SDL_FreeSurface(grass);

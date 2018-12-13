@@ -48,8 +48,12 @@ int main(int argc, char* argv[])
   SDL_Rect mobPosition1;
   SDL_Rect mobPosition2;
   SDL_Rect spritePosition;
-  int map[SCREEN_WIDTH][SCREEN_HEIGHT];
   int colorkey;
+  
+
+  int map[SCREEN_WIDTH][SCREEN_HEIGHT];
+  
+ 
     
 
   
@@ -137,39 +141,43 @@ int main(int argc, char* argv[])
     
   
   
+  /*position du fond de l'ecran */
   
   SDL_Rect positionFond;
   positionFond.x = 0;
   positionFond.y = 0;
+  
+  /* initialisation de la position de la souris */
   
   SDL_Rect positionmouse;
   positionmouse.x = 0; 
   positionmouse.y = 0;
 
 
-  int exit = 0;
-  int newmap = 1;
-  int gameover = 1;
-  int level=0;
-  int keys = 0;
-  int mobdir1 = 0;
+  int exit = 0;					/* passe a 1 quand l'utilisateur veut quitter le jeu */
+  int newmap = 1;				/* passe a 1 quand on change de niveau */
+  int gameover = 1;				/* passe a 1 quand on finit le jeu ou si les vies passent a 0 */
+  int level=0;					/* niveau actuel (3 maximum ici)*/
+  int keys = 0;					/* passe a 1 quand on recupere la clée */
+  int mobdir1 = 0;				/* direction des 3 monstres (0 ou 1 si il va a droite ou a gauche) */
   int mobdir2 = 0;
   int mobdir3 = 0;
-  int vie = 3;
-  int saut = 0;
+  int vie = 3;					/* nombre de vie */
+  int saut = 0;					/* compteur pour la hauteur du saut */
 
     
-  while (exit == 0){
+  while (exit == 0){				/* si exit passe a 1 le jeu se termine */
   
-  if (gameover==1)
+  if (gameover==1)				
   {
-  newmap = 1;
+  newmap = 1;					/* reinitialisation des parametres quand gameover passe a 1*/
   level=0;
   vie = 3;
 
+
   }
   
-  while (gameover)
+  while (gameover)				/* affichage du menu */
   {
     SDL_Event event;
     if (SDL_PollEvent(&event)) {
@@ -185,8 +193,9 @@ int main(int argc, char* argv[])
 
     
 
-      
-  if ((positionmouse.x > 60) & (positionmouse.x < 275) & (positionmouse.y > 200) & (positionmouse.y < 300) )
+  /* Si le curseur est sur le bouton start */
+    
+  if ((positionmouse.x > 60) & (positionmouse.x < 275) & (positionmouse.y > 200) & (positionmouse.y < 300) )		
   {
 
     SDL_BlitSurface(menu1, NULL, ecran, &positionFond);
@@ -202,7 +211,9 @@ int main(int argc, char* argv[])
   else
   {
     
-  if ((positionmouse.x > 50) & (positionmouse.x < 250) & (positionmouse.y > 400) & (positionmouse.y < 500))
+  /* Si le curseur est sur le bouton exit */
+  
+  if ((positionmouse.x > 50) & (positionmouse.x < 250) & (positionmouse.y > 400) & (positionmouse.y < 500))		
     {
 
       SDL_BlitSurface(menu2, NULL, ecran, &positionFond);
@@ -226,6 +237,8 @@ int main(int argc, char* argv[])
     
   }
  
+  /* debut du jeu */
+  
   while ((!gameover)&(!exit))
     {
       SDL_Event event;
@@ -240,9 +253,9 @@ int main(int argc, char* argv[])
       char intermediare[300] = "";
       char fondMap[TAILLE_MAX] = "";
 	    
-      if (level==0){
+      if (level==0){				
 	fichier = fopen("map0.txt", "r");
-	if (newmap==1){
+	if (newmap==1){					/*initialisation de la map selon de niveau (position des monstres / couleur de la map etc */
 	  spritePosition.x = 50;
 	  spritePosition.y = 600;
 	  mobPosition.x = 200;
@@ -253,6 +266,13 @@ int main(int argc, char* argv[])
 	  mobPosition2.y = 150;
 	  newmap=0;
 	  keys=0;
+	  temp  = SDL_LoadBMP("castleCenter.bmp");
+	  castle = SDL_DisplayFormat(temp);
+	  SDL_FreeSurface(temp);
+	  temp  = SDL_LoadBMP("grassCenter.bmp");
+	  grass = SDL_DisplayFormat(temp);
+	  SDL_FreeSurface(temp);
+
 	}
       }
       if (level==1){
@@ -268,6 +288,15 @@ int main(int argc, char* argv[])
 	  mobPosition2.y = 150;
 	  newmap=0;
 	  keys=0;
+	  temp  = SDL_LoadBMP("castleCenter1.bmp");
+	  castle = SDL_DisplayFormat(temp);
+	  SDL_FreeSurface(temp);
+	  temp  = SDL_LoadBMP("grassCenter1.bmp");
+	  grass = SDL_DisplayFormat(temp);
+	  SDL_FreeSurface(temp);
+	  
+	  
+	  
 	}
       }
       if (level==2){
@@ -275,14 +304,20 @@ int main(int argc, char* argv[])
 	if (newmap==1){
 	  spritePosition.x = 500;
 	  spritePosition.y = 350;
-	  mobPosition.x = 100;
+	  mobPosition.x = 50;
 	  mobPosition.y = 400;
 	  mobPosition1.x = 250;
 	  mobPosition1.y = 650;
-	  mobPosition2.x = 450;
-	  mobPosition2.y = 50;
+	  mobPosition2.x = 400;
+	  mobPosition2.y = 100;
 	  newmap=0;
 	  keys=0;
+	  temp  = SDL_LoadBMP("castleCenter2.bmp");
+	  castle = SDL_DisplayFormat(temp);
+	  SDL_FreeSurface(temp);
+	  temp  = SDL_LoadBMP("grassCenter2.bmp");
+	  grass = SDL_DisplayFormat(temp);
+	  SDL_FreeSurface(temp);
 	}
       }
       if (level==3){
@@ -298,16 +333,23 @@ int main(int argc, char* argv[])
 	  mobPosition2.y = 150;
 	  newmap=0;
 	  keys=0;
+	  temp  = SDL_LoadBMP("castleCenter3.bmp");
+	  castle = SDL_DisplayFormat(temp);
+	  SDL_FreeSurface(temp);
+	  temp  = SDL_LoadBMP("grassCenter3.bmp");
+	  grass = SDL_DisplayFormat(temp);
+	  SDL_FreeSurface(temp);
 	}
 
 	      
       }
-      if (level > 3){
+      if (level > 3){						/* si le level depasse 3 on repasse a 0 (condition plus bas qui finit le jeu) */
 	level=0;
       }
+      
       if(fichier != NULL)
 	{
-	  for (int i=0; i<15; i++){
+	  for (int i=0; i<15; i++){				/* recuperation de la carte en txt */
 	    fgets(intermediare, TAILLE_MAX, fichier);
 	    for (int j=0; j<20; j++){
 	      fondMap[20*
@@ -320,7 +362,7 @@ int main(int argc, char* argv[])
 	
 	
       SDL_Rect position;
-      /* Tracé du background en fonction des # */
+      /* Tracé du background en fonction des signes + creation du tableau** map */
       int x=0;
       int y=0;
       for (int z=0; z<300; z++)
@@ -345,7 +387,8 @@ int main(int argc, char* argv[])
 	      break;
 	  
 	    case '%' : 
-	      
+
+	      SDL_BlitSurface(grass, NULL, ecran, &position);
 	      if (keys == 0)
 		{
 		  SDL_BlitSurface(doorclose, NULL, ecran, &position);
@@ -403,8 +446,10 @@ int main(int argc, char* argv[])
 		}
 	      break;
 	      
-	    default :
-	       
+	      
+	     
+	    case ' ' :
+	  
 	      SDL_BlitSurface(grass, NULL, ecran, &position);
 	      for (int i=0; i<50 ;i++)
 		{
@@ -413,11 +458,18 @@ int main(int argc, char* argv[])
 		      map[50*x+i][50*y+j]=0;
 		    }
 		}
+	    break;
+	      
+	    default :
+	      exit = 1;
+	      printf("erreur de caractere dans la map %d \n",level);     /* si il y a un caractere inconnu dans le fichier txt le jeu se ferme */
+	      
+	      
 	    }
 	}
 
 
-      /* handle mob mouvement */
+      /* gestion du mouvement des monstres */
 
       /* 1er monstre */
 	
@@ -494,14 +546,14 @@ int main(int argc, char* argv[])
 	
 	
     
-      /* handle sprite movement */
+      /* gestion des mouvements */
       Uint8 *keystate;
       keystate = SDL_GetKeyState(NULL);
       
       
       
       
-      
+      /* mouvement gauche */
       
 
       if (keystate[SDLK_LEFT] ) {
@@ -517,7 +569,7 @@ int main(int argc, char* argv[])
 
       }
 	  
-	  
+      /* mouvement droit */
 	  
       if (keystate[SDLK_RIGHT] ) {
 	  
@@ -532,28 +584,29 @@ int main(int argc, char* argv[])
 
       }
 	
+      /* sauts et gravitée */
 	
       if (keystate[SDLK_UP] ) {
 
 	
 	  
 	  
-	if (map[spritePosition.x+15][spritePosition.y+49]==4)
+	if (map[spritePosition.x+15][spritePosition.y+49]==4)   /* tant  qu'on touche une échelle on peut monter */
 	  {
 	      saut = 0;
 	  }
 	
-	if (saut < 90)
+	if (saut < 90)						/* hauteur des sauts a 90 px max */
 	  {
 	  
 	    
-	    if (collisionHaut(spritePosition.x,spritePosition.y-1,map)==1)
+	    if (collisionHaut(spritePosition.x,spritePosition.y-1,map)==1)	/* si on touche un plafond le saut s'arrete */
 	    {
 	      saut = 90;
 	    }
 
 	      
-	    if (collisionHaut(spritePosition.x,spritePosition.y-5,map)==0)
+	    if (collisionHaut(spritePosition.x,spritePosition.y-5,map)==0)	/* le saut continue si il n'y a pas d'obstacle */
 	      {
 		spritePosition.y -= 5;
 		saut  += 5;
@@ -561,7 +614,7 @@ int main(int argc, char* argv[])
 	      }
 	    
 	    
-	    else
+	    else								/* si il y a un obstacle , on retourne a la position de l'obstacle */
 	      
 	      {
 		while (collisionHaut(spritePosition.x,spritePosition.y-1,map)==0)
@@ -573,7 +626,7 @@ int main(int argc, char* argv[])
 	      }
 	  }
 	  
-	  else
+	  else									/* si il n'y a rien en dessous de nous et que le saut est finit on tombe */
 	  
 	  {
 
@@ -587,7 +640,7 @@ int main(int argc, char* argv[])
 		    spritePosition.y -= 1;
 		  }
 	      }
-	    else
+	    else								/* reinitialisation du saut quand on touche le sol */
 	      {
 		saut = 0;
 	      }
@@ -598,9 +651,9 @@ int main(int argc, char* argv[])
 	else
 	  
 	  {
-	    if (map[spritePosition.x+15][spritePosition.y+49]==4)
+	    if (map[spritePosition.x+15][spritePosition.y+49]==4)		/* quand on est sur un echelle la gravitée ne marche pas */
 	    {
-	      if (keystate[SDLK_DOWN])
+	      if (keystate[SDLK_DOWN])						/* on descend si on appuie sur bas (sur une echelle) */
 		
 	      {
 	      if ( collisionBas(spritePosition.x,spritePosition.y,map)==0)
@@ -616,7 +669,7 @@ int main(int argc, char* argv[])
 	    }
 
 	  else{
-	    if ( collisionBas(spritePosition.x,spritePosition.y,map)==0)
+	    if ( collisionBas(spritePosition.x,spritePosition.y,map)==0)	/* si la touche haut n'est pas active la gravitée fait effet */
 	      {
 		spritePosition.y += 5;
 	    
@@ -636,8 +689,10 @@ int main(int argc, char* argv[])
 	  
 
 
-      colorkey = SDL_MapRGB(ecran->format ,255 ,255,255);
+      colorkey = SDL_MapRGB(ecran->format ,255 ,255,255);			/* ou retire le blanc des sprites */
       SDL_SetColorKey(sprite,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
+      SDL_SetColorKey(door,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
+      SDL_SetColorKey(doorclose,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
       SDL_SetColorKey(mob,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
       SDL_SetColorKey(mob2,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
       SDL_SetColorKey(coeur,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
@@ -646,8 +701,8 @@ int main(int argc, char* argv[])
       SDL_SetColorKey(key,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
       SDL_SetColorKey(ladder,SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
         
-      /* draw the sprite */
-      SDL_BlitSurface(sprite, NULL, ecran, &spritePosition);
+      /* dessin du sprite */
+      SDL_BlitSurface(sprite, NULL, ecran, &spritePosition);			
 	
       /*affichage du HUD */
       if (vie == 3)
@@ -707,20 +762,25 @@ int main(int argc, char* argv[])
       sprite = SDL_DisplayFormat(temp);
       SDL_FreeSurface(temp);
 	
-      if (
+      /* gestion des collisions avec les monstres */
+      if (						
 	  (collisionmob(spritePosition.x ,spritePosition.y ,mobPosition.x,mobPosition.y)==1)
 	|(collisionmob(spritePosition.x ,spritePosition.y ,mobPosition1.x,mobPosition1.y)==1)
 	|(collisionmob(spritePosition.x ,spritePosition.y ,mobPosition2.x,mobPosition2.y)==1))
       {
 	vie -= 1;
-	newmap = 1;
+	newmap = 1;		/* on retourne au debut de la map en cours si on touche un monstre */
       }
 	
-      if (map[spritePosition.x][spritePosition.y+5]==3){
+      /* gestion de la recuperation de la clée */
+      
+      if (map[spritePosition.x+18][spritePosition.y+25]==3){
 	keys = 1;
 	  
       }
 	
+      /* condition pour changer de niveau */
+      
       if ((map[spritePosition.x][spritePosition.y+5]==2) & (keys == 1)){
 	if ((level ==3) )
 	  {
@@ -736,6 +796,9 @@ int main(int argc, char* argv[])
 
 	
       }
+      
+      /* on retourne au menu si on a pas de vie */
+      
       if (vie == 0 )
       {
 	gameover =1;
